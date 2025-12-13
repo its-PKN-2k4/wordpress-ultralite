@@ -14,7 +14,7 @@ class HTMLNode:
         props_list = []
         for attr in self.props:
             val = self.props[attr]
-            full_attr = f'{attr}={val}'
+            full_attr = f'{attr}="{val}"'
             props_list.append(full_attr)
 
         return " ".join(props_list)
