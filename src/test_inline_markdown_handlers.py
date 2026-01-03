@@ -1,8 +1,26 @@
 import unittest
-from string_split_delimiter import *
+from inline_markdown_handlers import *
 
-from textnode import TextNode, TextType
+from textnode import *
 
+class TestImageLinkExtract(unittest.TestCase):
+    def test_extract_markdown_images(self):
+        matches = extract_markdown_images(
+        "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
+        )
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
+
+    def test_extract_no_image(self):
+        self.assertRaises(ValueError, extract_markdown_images, "")
+
+    def test_extract_markdown_hyperlink(self):
+        matches = extract_markdown_links(
+        "Tu tu tu du...[Max Verstappen](https://www.verstappen.com/)"
+        )
+        self.assertListEqual([("Max Verstappen", "https://www.verstappen.com/")], matches)
+
+    def test_extract_no_image(self):
+        self.assertRaises(ValueError, extract_markdown_links, "")
 
 class TestInlineMarkdown(unittest.TestCase):
     def test_delim_bold(self):
@@ -131,3 +149,7 @@ class TestInlineMarkdown(unittest.TestCase):
                 TextNode("link", TextType.LINK, "https://boot.dev"),
             ], text_to_nodes
         )
+
+
+if __name__ == "__main__":
+    unittest.main()

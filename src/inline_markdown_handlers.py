@@ -1,5 +1,5 @@
 from textnode import TextNode, TextType, text_node_to_html_node
-import image_link_extract
+import re
 
 def split_nodes_at_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
@@ -29,7 +29,7 @@ def split_nodes_image(old_nodes):
             continue
 
         remaining = old.text
-        images = image_link_extract.extract_markdown_images(remaining)
+        images = extract_markdown_images(remaining)
 
         if len(images) == 0:
             new_nodes.append(old)
@@ -53,7 +53,7 @@ def split_nodes_link(old_nodes):
             continue
 
         remaining = old.text
-        links = image_link_extract.extract_markdown_links(remaining)
+        links = extract_markdown_links(remaining)
 
         if len(links) == 0:
             new_nodes.append(old)
@@ -77,3 +77,14 @@ def text_to_textnodes(text):
     nodes = split_nodes_image(nodes)
     nodes = split_nodes_link(nodes)
     return nodes
+
+def extract_markdown_images(text):
+    if len(text) <= 0:
+        raise ValueError("Invalid image syntax in markdown: no url and/or no alt text")
+    return re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+
+
+def extract_markdown_links(text):
+    if len(text) <= 0:
+        raise ValueError("Invalid text linking syntax in markdown: no url and/or no linking text")
+    return re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
