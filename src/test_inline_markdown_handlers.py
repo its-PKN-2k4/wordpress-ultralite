@@ -1,5 +1,5 @@
 import unittest
-from string_split_delimiter import *
+from inline_markdown_handlers import *
 
 from textnode import *
 
