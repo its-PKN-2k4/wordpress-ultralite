@@ -46,6 +46,55 @@ This is the same paragraph on a new line
             ],
         )
 
+class TestMarkdownBlockClassification(unittest.TestCase):
+    def test_markdown_heading_type(self):
+        md = """
+# Never gonna give you up
+## Never gonna let you down 
+### Never gonna run around and desert you
+#### Never gonna make you cry
+##### Never gonna say goodbye
+        """
+        self.assertEqual(block_to_block_type(md), BlockType.HEADING)
+
+    def test_markdown_code_type(self):
+        md = """
+``` 
+s = "The future is now, old man"
+print(len(s))  
+```
+        """
+        self.assertEqual(block_to_block_type(md), BlockType.CODE)
+
+    def test_markdown_quote_type(self):
+        md = """
+> Never gonna give you up
+> Never gonna let you down 
+> Never gonna run around and desert you
+> Never gonna make you cry
+> Never gonna say goodbye
+        """
+        self.assertEqual(block_to_block_type(md), BlockType.QUOTE)
+
+    def test_markdown_unordered_type(self):
+        md = """
+- Never gonna give you up
+- Never gonna let you down 
+- Never gonna run around and desert you
+- Never gonna make you cry
+- Never gonna say goodbye
+        """
+        self.assertEqual(block_to_block_type(md), BlockType.UNORDERED_LIST)
+
+    def test_markdown_ordered_type(self):
+        md = """
+1. Never gonna give you up
+2. Never gonna let you down 
+3. Never gonna run around and desert you
+4. Never gonna make you cry
+5. Never gonna say goodbye
+        """
+        self.assertEqual(block_to_block_type(md), BlockType.ORDERED_LIST)
 
 if __name__ == "__main__":
     unittest.main()
