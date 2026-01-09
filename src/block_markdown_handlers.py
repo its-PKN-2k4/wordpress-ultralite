@@ -87,3 +87,13 @@ def check_ordered_list_type(block, expected=1):
             return False
         expected = expected + 1
     return True   
+
+def extract_title(markdown):
+    if len(markdown) == 0:
+        raise Exception("Invalid markdown: empty content")
+    lines = markdown.splitlines()
+    for line in lines:
+        if line.startswith("# "):
+            title = line.split(" ", 1)[1]
+            return title.strip()
+    raise Exception("No top-level heading found in parsed markdown")

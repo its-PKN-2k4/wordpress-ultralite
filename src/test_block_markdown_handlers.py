@@ -96,5 +96,25 @@ print(len(s))
         """
         self.assertEqual(block_to_block_type(md), BlockType.ORDERED_LIST)
 
+    def test_extract_title(self):
+        md = """
+# The Greatest Technicians That's Ever Lived
+
+1. Andy
+2. Lupe
+3. Zac
+        """
+        self.assertEqual(extract_title(md), "The Greatest Technicians That's Ever Lived")
+
+    def test_extract_title_failure(self):
+        md = """
+## Companies that betrays GAMERS:
+
+1. NVIDIA
+2. AMD
+3. Micron
+        """
+        self.assertRaises(Exception, extract_title, md)
+
 if __name__ == "__main__":
     unittest.main()
