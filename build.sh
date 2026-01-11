@@ -1,0 +1,1 @@
+python3 src/main.py "/its-PKN-2k4/wordpress-ultralite/"
