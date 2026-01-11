@@ -3,7 +3,7 @@ from block_markdown_handlers import extract_title
 import os
 from pathlib import Path
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, base_path="/"):
     print(f'Generating page from {from_path} to {dest_path} using {template_path}...')
     with open(from_path, 'r') as mdfile:
         md = mdfile.read()
@@ -16,6 +16,8 @@ def generate_page(from_path, template_path, dest_path):
 
     template = template.replace("{{ Title }}", page_tile)
     template = template.replace("{{ Content }}", parent_html)
+    template = template.replace('href="/', f'href="{base_path}')
+    template = template.replace('src="/', f'src="{base_path}')
 
     directory = os.path.dirname(dest_path)
     if directory:
@@ -24,7 +26,7 @@ def generate_page(from_path, template_path, dest_path):
     with open(dest_path, 'w') as newfile:
         newfile.write(template)
 
-def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_page_recursive(dir_path_content, template_path, dest_dir_path, base_path="/"):
     files = os.listdir(dir_path_content)
 
     for fname in files:
